@@ -1,25 +1,33 @@
 import { useEffect, useState } from "react";
 import {getTrending} from "../Api";
 import { Lin, Title } from "./Home.styled";
+import {Div} from "../components/MovieDetails/Cast/Cast.styled";
+import { Loader } from "components/Loader/Loader";
 
 
-export const Home = () => {
+ const Home = () => {
    const [trends, setTrends] = useState([]);
+   const [status, setStatus] = useState("idle");
+   
    
    useEffect(() => {
-    getTrending().then(content => setTrends(content.data.results))
+       setStatus('loading')
+    getTrending().then(content => {
+        setTrends(content.data.results)
+            setStatus('success')}).catch(error => setStatus('error'))
    }, []);
    
-    return <>
+    return <Div>
     <Title>Trending Films</Title>
-    {trends.map(trend =>{
-        return <Lin key={trend.id}>{trend.original_title}</Lin>
+    
+    {status === 'success' && trends.map(trend =>{
+        return <Lin key={trend.id} to={`movies/${trend.id}`}>{trend.original_title}</Lin>
     })}
-    </>
+    
+     {status === 'loading' && <Loader/>}
+    </Div>
 }
 
+export default Home
 
-
-// const funk = async () => {
-//     const content = await getTrending();
-// }
+//https://image.tmdb.org/t/p/original/

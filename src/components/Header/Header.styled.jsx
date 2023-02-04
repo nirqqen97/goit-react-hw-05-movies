@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import { NavLink } from 'react-router-dom';
 
-export const HeaderText = styled.a`
+export const HeaderText = styled(NavLink)`
     font-size:20px;
     margin-left:20px;
     text-decoration:none;
