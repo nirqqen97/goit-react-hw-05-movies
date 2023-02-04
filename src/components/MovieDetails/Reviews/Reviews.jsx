@@ -4,7 +4,7 @@ import {Info,Div} from "../Cast/Cast.styled";
 import { Loader } from "components/Loader/Loader";
 import { getReview } from "Api";
 
-export const Reviews = () =>{
+const Reviews = () =>{
     const id = useParams()
     const [reviews, setReviews] = useState([]);
     const [status, setStatus] = useState('idle');
@@ -28,3 +28,4 @@ export const Reviews = () =>{
     </>
 }
 
+export default Reviews

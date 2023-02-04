@@ -2,11 +2,11 @@ import { getCast } from "Api"
 import { Loader } from "components/Loader/Loader";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
-import { Photo,Info,Div} from "./Cast/Cast.styled";
+import { Photo,Info,Div} from "./Cast.styled";
 
 const DEFAULT_URL = "https://www.themoviedb.org/t/p/w500/"
 
-export const Cast = () =>{
+const Cast = () =>{
     const id = useParams()
     const [casts, setCasts] = useState([]);
     const [status, setStatus] = useState("idle");
@@ -30,3 +30,4 @@ export const Cast = () =>{
 }
 
 
+export default Cast

@@ -1,5 +1,5 @@
 import { getFilms } from "Api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {FilmList} from "./FilmList/FilmList";
 import {Loader} from "../components/Loader/Loader";
 
@@ -12,20 +12,29 @@ const Movies = () =>{
     const [searchParams, setSearchParams] = useSearchParams();
     const search = searchParams.get('search') ?? '';
     const location = useLocation()
-    const handleChange = e =>{  
-        setSearchParams({search : e.currentTarget.value})
+    const [query, setQuery] = useState('');
+    
+    const handleChange = e =>{
+        setQuery(e.currentTarget.value)  
+       
     }
+    useEffect(() => {
+     if (!search) {
+         return
+     }
+     setStatus('loading')
+     getFilms(search,1).then(film => {
+         setFilms(film.data.results)
+         setStatus('success')
+     }).catch(setStatus('error'))
+     
+    }, [search]);
+    
+    
     const handleSubmit = async (e) => {
+        setSearchParams({search : query})
+        console.log();
         e.preventDefault();
-        try {
-            setStatus('loading')
-            const content = await getFilms(search,1);
-            setFilms(content.data.results);
-          } catch (error) {
-            setStatus('error')
-          } finally {
-          setStatus('success')
-          }
     }
     
     return <Container>
@@ -37,7 +46,7 @@ const Movies = () =>{
             autoComplete="off"
             autoFocus
             placeholder="Search films "
-            value={search} 
+            value={query} 
             />
             <Btn type="submit">Search</Btn>
         </Form>
@@ -47,3 +56,10 @@ const Movies = () =>{
 }
 
 export default Movies
+
+// useEffect(() => {
+//     setStatus('loading')
+//     getReview(id.movieId).then(c => {
+//         setReviews(c.data.results)
+//         setStatus('success')}).catch(setStatus('error'))
+// }, [id]);
